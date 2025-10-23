@@ -1,0 +1,31 @@
+{% extends 'app_templates/base.html' %} 
+{% load static %} 
+{% load dictkey %} 
+{% block title%} <title>Home</title> {% endblock title %}
+{% block content %}
+<div class="container my-5">
+    <div class="text-center mb-4">
+        <h4 class="text-success">We've got a variety of sports items:</h4>
+    </div>
+
+    <div class="row justify-content-center">
+        {% for category in categories %}
+        <div class="col-md-3 col-sm-6 mb-4">
+            <div class="card h-100 shadow-sm">
+               <!-- Display category image if available, otherwise show a default image -->
+               <!-- We use the dictkey to access the images of the first item in a category--> 
+               <!-- The dictkey filter is used to access the image URL from the category_images dictionary -->
+                {% if category_images|dictkey:category.id %}
+                <img src="{{ category_images|dictkey:category.id }}" class="card-img-top" alt="{{ category.category }}">
+                {% else %}
+                <img src="{% static 'app_templates/images/default.png' %}" class="card-img-top" alt="{{ category.category }}">
+                {% endif %}
+                <div class="card-body text-center">
+                    <a href="{% url 'category_items' category.id %}" class="btn btn-outline-success">{{ category.category }}</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,55 @@
+{% extends "app_templates/base.html" %}
+{% block title %}<title>Item Category</title>{% endblock title %}
+{% load static %}
+{% load cart_dict %}
+{% block content %}
+<div class="container my-5">
+    {% if items %}
+    <div class="row">
+        {% for item in items %}
+        <div class="col-md-4 col-sm-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                {% if item.image %}
+                <img src="{{ item.image.url }}" class="card-img-top" alt="{{ item.name }}">
+                {% else %}
+                <img src="{% static 'app_templates/images/default.png' %}" class="card-img-top" alt="{{ item.name }}">
+                {% endif %}
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title text-center">
+                        <a href="#" class="text-decoration-none text-dark">{{ item.name }}</a>
+                    </h5>
+                    <p class="text-center text-muted">Price: <strong>Ksh {{ item.price }}</strong></p>
+                    {% if user.is_authenticated %}
+                    <form method="post" action="{% url 'add_to_cart' item.id %}">
+                        {% csrf_token %}
+                        <div class="input-group mb-3">
+                            <button type="submit" name="action" value="decrease" class="btn btn-outline-secondary" {% if cart|get_item:item.id|default:0 <= 0 %}disabled{% endif %}>-</button>
+                            <input type="number" name="quantity" value="{{ cart|get_item:item.id|default:0 }}" class="form-control text-center" min="0" max="{{ item.stock }}">
+                            <button type="submit" name="action" value="increase" class="btn btn-outline-secondary" {% if cart|get_item:item.id|default:0 >= item.stock %}disabled{% endif %}>+</button>
+                        </div>
+                    </form>
+                    {% else %}
+                    <form method="post" action="{% url 'save_cart_intent' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="item_id" value="{{ item.id }}">
+                        <input type="hidden" name="quantity" value="{{ cart|get_item:item.id|default:1 }}">
+                        <input type="hidden" name="action" value="add">
+                        <input type="hidden" name="return_to" value="{{ request.path }}">
+                        <div class="input-group mb-3">
+                            <button type="submit" class="btn btn-outline-success w-100">Log in to add item to cart</button>
+                        </div>
+                    </form>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-warning text-center" role="alert">
+        No items available in this category.
+    </div>
+    {% endif %}
+</div>
+{% endblock content %}

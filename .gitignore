@@ -1,0 +1,53 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Django
+db.sqlite3
+*.log
+*.pot
+*.pyc
+*.mo
+
+# Environment & Secrets
+.env
+.env.*
+*.secret
+*.key
+
+# Virtual Environments
+venv/
+env/
+.venv/
+
+# IDEs & Editors
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Media
+media/
+
+# Staticfiles 
+staticfiles/
+
+# Build Artifacts
+build/
+dist/
+*.egg-info/
+*.eggs/
+MANIFEST
+
+# Backup & Temp
+*.bak
+*.tmp
+*.swp
+*.~*

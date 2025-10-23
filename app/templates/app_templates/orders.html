@@ -1,0 +1,28 @@
+{% extends "app_templates/base.html" %}
+{% block title %}<title>My Orders</title>{% endblock title %}
+{% load static %}
+{% block content %}
+<div class="orders-container">
+    {% if not order_dict %}
+        <div class="no-orders">
+            <h4>You have no orders yet.</h4>
+            <a href="{% url 'store-home' %}">Start shopping now!</a>
+        </div>
+    {% else %}
+        {% for order in order_dict %}
+            <div class="order-card">
+                <p class="order-id">🧾 Order ID: {{ order.order_id }}</p>
+                <p class="order-status">📦 Status: {{ order.order_status }}</p>
+                {% if order.delivery_time %}
+                    <p class="delivered-time">🚚 Delivered At: {{ order.delivery_time }}</p>
+                {% endif %}
+                <ul>
+                    {% for item in order.items %}
+                        <li>{{ item.quantity }} × {{ item.name }} — Ksh {{ item.subtotal }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+{% endblock content %}

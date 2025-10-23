@@ -1,0 +1,22 @@
+{% extends "app_templates/base.html" %}
+{% load static %}
+{% block title %}<title>Processing Payment</title>{% endblock title %}
+
+{% block content %}
+{% if not order.is_paid %}
+  <meta http-equiv="refresh" content="10">
+
+  <div class="d-flex flex-column align-items-center justify-content-center mt-5">
+    <h3 class="fw-semibold text-success mb-3 animate__animated animate__pulse animate__infinite">
+      Awaiting M-PESA Confirmation
+    </h3>
+
+    <p class="text-muted mb-4">
+      Your payment request has been sent. This page will refresh automatically once confirmation is received.
+    </p>
+
+    <div class="spinner-border text-success" role="status" aria-hidden="true"></div>
+    <small class="text-muted mt-2">Listening for callback from Safaricom...</small>
+  </div>
+{% endif %}
+{% endblock content %}
