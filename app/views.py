@@ -59,9 +59,6 @@ class CustomLoginView(LoginView):
 
 
 def home(request):
-    username = request.session.get("username", "Guest")
-    email = request.session.get("email", "No email provided")
-    # Fetching all categories and their first item's image
     categories = ItemCategory.objects.all()
     category_images = {}
     for category in categories:

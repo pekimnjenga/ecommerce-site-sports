@@ -3,7 +3,7 @@ import logging
 from datetime import timedelta
 
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import render
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 
@@ -109,7 +109,7 @@ def mpesa_callback(request):
 
         return JsonResponse({"ResultCode": 0, "ResultDesc": "Accepted"})
 
-    except Exception as e:
+    except Exception:
         logger.exception("Error processing M-PESA callback")
         return JsonResponse(
             {"ResultCode": 1, "ResultDesc": "Callback processing error"}, status=500

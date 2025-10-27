@@ -8,6 +8,7 @@ from .views import CustomLoginView, CustomLogoutView
 
 urlpatterns = [
     path("signup/", user_views.sign_up, name="store-signup"),
+    path("", user_views.home, name="store-home"),
     path("home/", user_views.home, name="store-home"),
     path(
         "login/",

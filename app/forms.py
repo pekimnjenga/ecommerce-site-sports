@@ -1,8 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
 
-from app.models import Order
-
 
 class UserModelForm(forms.ModelForm):
     username = forms.CharField(max_length=100, required=True, label="Username")

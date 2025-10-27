@@ -2,4 +2,10 @@ django
 django-crispy-forms
 crispy-bootstrap5
 python-dotenv
+psycopg2-binary
 Pillow
+black
+flake8
+isort
+safety
+

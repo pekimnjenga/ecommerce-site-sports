@@ -34,7 +34,7 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://33bb47bceb90.ngrok-free.app",
+    "https://e4708532ec72.ngrok-free.app",
 ]
 
 
@@ -89,25 +89,24 @@ WSGI_APPLICATION = "store.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-#DATABASES = {
-    #"default": {
-        #"ENGINE": "django.db.backends.sqlite3",
-        #"NAME": BASE_DIR / "db.sqlite3",
-    #}
-#}
-
-
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DATABASE_NAME'),
-        'USER': os.getenv('DATABASE_USER'),
-        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
-        'HOST': os.getenv('DATABASE_HOST'),
-        'PORT': os.getenv('DATABASE_PORT'),
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
 
+
+# DATABASES = {
+# "default": {
+# "ENGINE": "django.db.backends.postgresql",
+# "NAME": os.getenv("DATABASE_NAME"),
+# "USER": os.getenv("DATABASE_USER"),
+# "PASSWORD": os.getenv("DATABASE_PASSWORD"),
+# "HOST": os.getenv("DATABASE_HOST"),
+# "PORT": os.getenv("DATABASE_PORT"),
+# }
+# }
 
 
 # Password validation
@@ -160,6 +159,13 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 86400  # 1 day in seconds
 SESSION_SAVE_EVERY_REQUEST = True
 
+# MPESA SETTINGS
+MPESA_CONSUMER_KEY = os.getenv("MPESA_CONSUMER_KEY")
+MPESA_CONSUMER_SECRET = os.getenv("MPESA_CONSUMER_SECRET")
+MPESA_PASSKEY = os.getenv("MPESA_PASSKEY")
+MPESA_CALLBACK_URL = os.getenv("MPESA_CALLBACK_URL")
+MPESA_SHORTCODE = os.getenv("MPESA_SHORTCODE")
+MPESA_BASE_URL = "https://sandbox.safaricom.co.ke"
 
 LOGGING = {
     "version": 1,

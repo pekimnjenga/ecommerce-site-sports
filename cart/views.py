@@ -259,8 +259,6 @@ def process_cart_intent(request):
         quantity = int(intent.get("quantity", 1))
         action = intent.get("action")
         return_to = intent.get("return_to", "/")
-
-        item = get_object_or_404(Items, id=item_id)
         cart = request.session.get("cart", {})
         item_key = str(item_id)
 

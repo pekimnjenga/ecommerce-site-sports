@@ -1,11 +1,12 @@
 ### ecommerce-site-sports
-An simple and elegant ecommerce platform for selling sports items — built with Django, styled with Bootstrap 5, css and html, and powered by M-PESA Daraja API for seamless mobile payments.
+An simple ecommerce platform for selling sports items — built with Django, styled with Bootstrap 5, css and html, and powered by M-PESA Daraja API for seamless mobile payments.
 
 ### Features
 - Add sports items to cart
 - Enter phone number and address
 - Receive M-PESA STK Push prompt
 - Redirected to a success page upon payment confirmation
+- Contains orders page for tracking the order,i.e, order ID, items ordered and delivery status
 - Payment audit and callback handling via Daraja API
 - Deployed on [Render](https://render.com)
 - Database hosted on [Supabase](https://supabase.com)
@@ -21,9 +22,7 @@ An simple and elegant ecommerce platform for selling sports items — built with
       black — ensures consistent code formatting
       isort — enforces import order
       flake8 — flags style and syntax issues
-      bandit — scans for security vulnerabilities
       safety — checks for insecure dependencies
-      coverage.py — runs tests and enforces minimum coverage
     CD Automation - The project gets automatically deployed to Render after passing all testing and quality checks
 - Version Control: GitHub — source code management and collaboration
 
@@ -137,7 +136,12 @@ MPESA_SHORTCODE=174379
 MPESA_PASSKEY=bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919
 MPESA_CALLBACK_URL=https://yourdomain.com/callback/
 ```
-For MPESA_CALLBACK_URL, use your exposed ngrok URL during local development.
+For MPESA_CALLBACK_URL, use your exposed ngrok URL during local development, and also make sure the exposed ngrok url is trusted by csrf
+```settings
+CSRF_TRUSTED_ORIGINS = [
+    "yourngrokurl",
+]
+```
 
 
 ##### Production
@@ -145,6 +149,22 @@ For MPESA_CALLBACK_URL, use your exposed ngrok URL during local development.
 - After entering the mpesa shortcode, username and organisation name you will be redirected to a page where you will select the API products and enter an OTP which will be sent to your email.
 - After the above process Safaricom will email you a passkey, then your live app will now be visible after you go to 'My Apps' and click on the dropdown at the 'Active entity' section. The app will have the credentials required i.e Consumer key, Consumer secret and the shortcode. 
 
+### Pre-commit Hooks
+This project uses [pre-commit](https://pre-commit.com/) to enforce code quality and security checks before each commit.
+To set it up locally:
+
+```bash
+pip install pre-commit
+pre-commit install
+```
+This activates hooks for:
+  black — code formatting
+  isort — import sorting
+  flake8 — style and syntax checks
+NOTE : There is no official pre-commit hook for safety maintained by Safety CLI or PyUp, but you can still run safety in CI or manually
+```bash
+safety check --full-report --file=requirements.txt
+```
 
 ### Deployment Notes
 - Render handles static/media files via Django’s collectstatic and /media/ folder
