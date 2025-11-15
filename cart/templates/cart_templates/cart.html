@@ -1,6 +1,7 @@
 {% extends "app_templates/base.html" %}
 {% block title %}<title>My Cart</title>{% endblock title %}
 {% block content %}
+{% load static %}
 
 <div class="container my-5">
   <h2 class="mb-4">🛒 My Cart</h2>
@@ -8,9 +9,17 @@
   {% if cart_items %}
   {% for entry in cart_items %}
     <div class="card mb-3 p-3 d-flex align-items-center">
-      <img src="{{ entry.item.image.url }}" alt="{{ entry.item.name }}" class="me-3 rounded" width="100" height="100">
+     {% if entry.item.images.count > 0 %}
+     <img src="{{ entry.item.images.first.image_url }}" alt="{{ entry.item.name }}" class="me-3 rounded" width="100" height="100">
+     {% else %}
+     <img src="{% static 'app_templates/images/default.png' %}" alt="{{ entry.item.name }}" class="me-3 rounded" width="100" height="100">
+     {% endif %}
+
       <div class="flex-grow-1">
         <p><strong>Item:</strong> {{ entry.item.name }}</p>
+        {% if entry.size %}
+        <p><strong>Size:</strong> {{ entry.size }}</p>
+        {% endif %}
         <p><strong>Quantity:</strong> {{ entry.quantity }}</p>
         <p><strong>Amount:</strong> Ksh {{ entry.amount }}</p>
 
@@ -29,12 +38,17 @@
             <button type="submit" class="btn btn-outline-warning">−</button>
           </form>
 
-          <form method="post" action="{% url 'remove_from_cart' entry.item.id %}" style="display:inline;">
+          {% if entry.item.id %}
+          <form method="POST" action="{% url 'remove_from_cart' entry.item.id %}">
             {% csrf_token %}
-            <input type="hidden" name="quantity" value="{{ entry.quantity }}">
+            {% if entry.size %}
+            <input type="hidden" name="size" value="{{ entry.size }}">
+            {% endif %}
             <input type="hidden" name="action" value="remove">
-            <button type="submit" class="btn btn-outline-danger">Remove</button>
+            <button type="submit" class="btn btn-danger btn-sm">Remove</button>
           </form>
+          {% endif %}
+
         </div>
       </div>
     </div>

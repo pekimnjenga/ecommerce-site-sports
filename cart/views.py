@@ -1,6 +1,7 @@
 import json
 import logging
 
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.utils import timezone
@@ -18,69 +19,57 @@ logger = logging.getLogger(__name__)
 @require_POST
 @login_required
 def add_to_cart(request, item_id):
-    item = get_object_or_404(Items, id=item_id)  #
-    cart = request.session.get("cart", {})  # Retrieving the cart from the session
-    quantity = int(
-        request.POST.get("quantity", 1)
-    )  # Getting the quantity from the form,default is 1
-    action = request.POST.get(
-        "action"
-    )  # Getting the action from the form,which will be either 'add' or 'remove'
-    stock = item.stock
+    item = get_object_or_404(Items, id=item_id)
+    cart = request.session.get("cart", {})
 
-    if item:
-        if action == "increase" and quantity < stock:
-            quantity += 1
-            cart[str(item_id)] = (
-                quantity  # Setting the quantity of the item in the cart
-            )
-        elif action == "decrease" and quantity > 0:
-            quantity -= 1
-            cart[str(item_id)] = quantity
-        elif action == "decrease" and quantity == 0:
-            cart[str(item_id)] = 0
-        elif action == "add":  # If the action is add,add the item to the cart
-            cart[str(item_id)] = (
-                quantity  # Setting the quantity of the item in the cart
-            )
-        if (
-            cart.get(str(item_id), 0) == 0
-        ):  # If the quantity of the item is 0,remove it from the cart
-            cart.pop(str(item_id), None)
+    # Get quantity and size
+    quantity = int(request.POST.get("quantity", 1))
+    size = request.POST.get("size")
 
-    request.session["cart"] = cart  # Storing the cart back to the session
-    return redirect(
-        request.META.get("HTTP_REFERER", "category_items")
-    )  # Redirecting the user to the same page
+    # Enforce size selection only if item requires it
+    if item.sizes and not size:
+        messages.warning(request, "Please select a size before adding to cart.")
+        return redirect("item_details", item_id=item_id)
+
+    # Save selected size to session
+    if size:
+        selected_sizes = request.session.get("selected_sizes", {})
+        selected_sizes[str(item_id)] = size
+        request.session["selected_sizes"] = selected_sizes
+
+    # Build item key and update cart
+    item_key = f"{item_id}:{size}" if size else str(item_id)
+    cart[item_key] = quantity
+    request.session["cart"] = cart
+
+    return redirect("mycart")
 
 
 @login_required
 def remove_from_cart(request, item_id):
-    item = get_object_or_404(Items, id=item_id)  #
-    cart = request.session.get("cart", {})  # Retrieving the cart from the session
-    quantity = int(
-        request.POST.get("quantity", 1)
-    )  # Getting the quantity from the form,default is 1
-    action = request.POST.get(
-        "action"
-    )  # Getting the action from the form,which will be either 'add' or 'remove'
+    item = get_object_or_404(Items.objects.prefetch_related("images"), id=item_id)
+    cart = request.session.get("cart", {})
     stock = item.stock
-    item_key = str(item_id)
-    if item_key in cart:
-        if action == "increase" and quantity < stock:
-            quantity += 1
-            cart[str(item_id)] = (
-                quantity  # Setting the quantity of the item in the cart
-            )
-        elif action == "decrease" and quantity > 0:
-            quantity -= 1
-            cart[str(item_id)] = quantity
-        elif action == "decrease" and quantity == 0:
-            cart.pop(str(item_id), None)
-        elif action == "remove":  # If the action is add,add the item to the cart
-            del cart[str(item_id)]
+    size = request.POST.get("size")
+    item_key = f"{item_id}:{size}" if size else str(item_id)
+    quantity = int(request.POST.get("quantity", 1))
+    action = request.POST.get("action")
 
-    request.session["cart"] = cart  # Storing the cart back to the session
+    if action == "increase" and quantity < stock:
+        quantity += 1
+        cart[item_key] = quantity
+    elif action == "decrease" and quantity > 0:
+        quantity -= 1
+        cart[item_key] = quantity
+    elif action == "decrease" and quantity == 0:
+        cart[item_key] = 0
+    elif action == "add":
+        cart[item_key] = quantity
+    elif action == "remove":
+        cart.pop(item_key, None)
+    if cart.get(item_key, 0) == 0:
+        cart.pop(item_key, None)
+    request.session["cart"] = cart
     return redirect(
         request.META.get("HTTP_REFERER", "category_items")
     )  # Redirecting the user to the same page
@@ -91,15 +80,26 @@ def cart(request):
     cart = request.session.get("cart", {})
     logger.info("Cart session retrieved for user %s: %s", request.user.username, cart)
 
-    items = Items.objects.filter(id__in=cart.keys())
     cart_items = []
     total = 0
 
-    for item in items:
-        quantity = int(cart.get(str(item.id), 0))
+    for key, quantity in cart.items():
+        if ":" in key:
+            item_id, size = key.split(":", 1)
+        else:
+            item_id, size = key, None
+        item = Items.objects.get(id=item_id)
         amount = item.price * quantity
         total += amount
-        cart_items.append({"item": item, "quantity": quantity, "amount": float(amount)})
+        cart_items.append(
+            {
+                "item": item,
+                "quantity": quantity,
+                "amount": float(amount),
+                "size": size,
+            }
+        )
+
     logger.info(
         "Cart items calculated for user %s: %s", request.user.username, cart_items
     )
@@ -165,6 +165,7 @@ def cart(request):
                     item=entry["item"],
                     quantity=entry["quantity"],
                     subtotal=entry["amount"],
+                    size=entry["size"],
                 )
             logger.info("OrderItems created for Order %s", order.id)
 
@@ -260,7 +261,8 @@ def process_cart_intent(request):
         action = intent.get("action")
         return_to = intent.get("return_to", "/")
         cart = request.session.get("cart", {})
-        item_key = str(item_id)
+        size = request.session.get("selected_sizes", {}).get(str(item_id))
+        item_key = f"{item_id}:{size}" if size else str(item_id)
 
         if action == "add":
             cart[item_key] = cart.get(item_key, 0) + quantity

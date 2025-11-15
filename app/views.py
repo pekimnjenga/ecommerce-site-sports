@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.timezone import localtime
 
 from app.forms import UserModelForm
-from app.models import ItemCategory, Order
+from app.models import ItemCategory, Items, Order
 
 
 def sign_up(request):
@@ -63,22 +63,34 @@ def home(request):
     category_images = {}
     for category in categories:
         first_item = category.items.first()
-        category_images[category.id] = (
-            first_item.image.url if first_item else "images/default.jpg"
-        )
+        # use the first image of the first item if available, otherwise use a default
+        if first_item and first_item.images.exists():
+            first_image_url = first_item.images.first().image_url
+        else:
+            first_image_url = "images/default.jpg"
+        category_images[category.id] = first_image_url
     context = {"categories": categories, "category_images": category_images}
     return render(request, "app_templates/home.html", context)
 
 
 def category_items(request, category_id):
-    cart = request.session.get("cart", {})
     category = get_object_or_404(ItemCategory, id=category_id)
     items = category.items.all()
-
     return render(
         request,
         "app_templates/category_items.html",
-        {"items": items, "category": category, "cart": cart},
+        {"items": items, "category": category},
+    )
+
+
+def item_details(request, item_id):
+    item = get_object_or_404(Items.objects.prefetch_related("images"), id=item_id)
+    cart = request.session.get("cart", {})
+    selected_sizes = request.session.get("selected_sizes", {})
+    return render(
+        request,
+        "app_templates/item_details.html",
+        {"item": item, "cart": cart, "selected_sizes": selected_sizes},
     )
 
 

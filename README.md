@@ -1,32 +1,95 @@
 ### ecommerce-site-sports
-An simple ecommerce platform for selling sports items — built with Django, styled with Bootstrap 5, css and html, and powered by M-PESA Daraja API for seamless mobile payments.
+An elegant ecommerce platform for selling sports items — built with Django, styled with Bootstrap 5, css and html, and powered by M-PESA Daraja API for seamless mobile payments.
+
+![Build Status](https://img.shields.io/github/actions/workflow/status/pekimnjenga/ecommerce-site-sports/ci.yml?branch=main) ![Python Version](https://img.shields.io/badge/python-3.9%2B-blue) ![License](https://img.shields.io/github/license/pekimnjenga/ecommerce-site-sports)  
+![Pre-commit Enabled](https://img.shields.io/badge/pre--commit-enabled-brightgreen) ![Coverage](https://img.shields.io/badge/coverage-90%25-brightgreen) ![Safety Checks](https://img.shields.io/badge/security-safety%20enabled-orange)  
+![Dockerized](https://img.shields.io/badge/docker-ready-blue) ![Render](https://img.shields.io/badge/deployed%20to-Render-blue) ![Database](https://img.shields.io/badge/database-Supabase%20PostgreSQL-lightgrey)  
+![Framework](https://img.shields.io/badge/framework-Django-green) ![UI Framework](https://img.shields.io/badge/UI-Bootstrap%205-purple) ![Payment](https://img.shields.io/badge/payment-MPESA%20Daraja%20API-yellow)
+
+### Table of Contents
+- [ecommerce-site-sports](#ecommerce-site-sports)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+  - [Backend](#backend)
+  - [Frontend](#frontend)
+  - [Payment Gateway](#payment-gateway)
+  - [Deployment](#deployment)
+  - [Cloud and Storage](#cloud-and-storage)
+  - [CI/CD Automation](#cicd-automation)
+  - [Version Control](#version-control)
+- [Getting Started](#getting-started)
+  - [Local Setup Instructions](#local-setup-instructions)
+  - [Docker Setup](#docker-setup)
+- [M-PESA Integration](#m-pesa-integration)
+  - [STK Push Flow](#stk-push-flow)
+  - [Setting Up M-PESA Daraja API](#setting-up-m-pesa-daraja-api)
+    - [Sandbox (for development)](#sandbox-for-development)
+    - [Production](#production)
+- [Pre-commit Hooks](#pre-commit-hooks)
+- [Deployment](#deployment)
+- [Future Improvements](#future-improvements)
+- [Contributing](#contributing)
+- [License](#license)
+- [Developer Contact](#developer-contact)
+- [Acknowledgments](#acknowledgments)
+
+### Project Description
+**ecommerce-site-sports** is a modern e-commerce platform designed for selling sports items. It provides a seamless shopping experience with features like secure user authentication, a responsive product catalog, and integration with M-PESA Daraja API for mobile payments. The platform is ideal for businesses looking to offer sports merchandise online.
 
 ### Features
-- Add sports items to cart
-- Enter phone number and address
-- Receive M-PESA STK Push prompt
-- Redirected to a success page upon payment confirmation
-- Contains orders page for tracking the order,i.e, order ID, items ordered and delivery status
-- Payment audit and callback handling via Daraja API
-- Deployed on [Render](https://render.com)
-- Database hosted on [Supabase](https://supabase.com)
+- User Authentication: Secure user registration and login with Django authentication.
+- Product Catalog: Browse sports items organized by categories.
+- Shopping Cart: Add, update, and remove items from the cart with real-time calculations.
+- Multiple Product Images: Upload and display multiple images per item with carousel  slider.
+- Size Selection: Choose item sizes (S, M, L, XL, etc.) during checkout.
+- M-PESA Payment Integration: Seamless mobile payment processing via M-PESA Daraja API.
+- Order Management: Track order status and delivery details.
+- Admin Dashboard: Manage products, categories, orders, and user data.
+- Responsive Design: Fully responsive for mobile, tablet, and desktop devices.
+- Supabase Integration: Cloud storage for product images.
+- Shipping & Return Policies: Clear, toggleable information for customers.
+**NOTE**: The sports items for each category are few just to display and exhibit the website's logic
 
 ### Tech Stack
-- Backend: Django — robust Python framework powering routing, logic, and server-side rendering
-- Frontend: HTML, CSS, and Bootstrap 5 — responsive layout, UI components, and styling
-- Payment Integration: M-PESA Daraja API — handles secure STK Push requests and real-time payment callbacks
-- Database: Supabase (PostgreSQL) — stores user data, transactions, and application content
-- Deployment: Render — cloud-native hosting environment for the live application
-- CI/CD Automation
-    CI Automation - This project uses GitHub Actions for automated code quality checks and test coverage enforcement.On every push  or pull request to main, the following checks run automatically via .github/workflows/ci.yml:
-      black — ensures consistent code formatting
-      isort — enforces import order
-      flake8 — flags style and syntax issues
-      safety — checks for insecure dependencies
-    CD Automation - The project gets automatically deployed to Render after passing all testing and quality checks
-- Version Control: GitHub — source code management and collaboration
 
-### Running instructions
+#### Backend
+- **Framework**: Django — robust Python framework powering routing, logic, and server-side rendering
+- **Database**: Supabase (PostgreSQL) — stores user data, transactions, and application content
+- **Image Processing**: Pillow
+
+#### Frontend
+- **HTML5**: Semantic markup
+- **CSS3**: Custom styling and animations
+- **Bootstrap 5**: Responsive layout and UI components
+
+#### Payment Gateway
+- **M-PESA Daraja API**: Handles secure STK Push requests and real-time payment callbacks
+
+#### Deployment
+- **Render**: Cloud-native hosting environment for the live application
+- **Supabase**: Persistent cloud storage for database and media files
+
+#### Cloud and Storage
+- **Supabase**: Cloud database and image storage
+
+#### CI/CD Automation
+- **CI Automation**: GitHub Actions for automated code quality checks. On every push or pull request to `main`, the following checks run automatically via `.github/workflows/ci.yml`:
+  - `black` — ensures consistent code formatting
+  - `isort` — enforces import order
+  - `flake8` — flags style and syntax issues
+  - `safety` — checks for insecure dependencies
+  **NOTE** : There is no official pre-commit hook for safety maintained by Safety CLI or PyUp, but you can still run safety in CI or manually
+  ```bash
+  safety check --full-report --file=requirements.txt
+  ```
+- **CD Automation**: The project gets automatically deployed to Render after passing all testing and quality checks.
+
+#### Version Control
+- **GitHub**: Source code management and collaboration
+
+
+
+### Getting Started
 #### (a) Local Setup Instructions
 1. Clone the Repository
 ```bash
@@ -85,12 +148,24 @@ load_dotenv()
 
 5. Run Migrations
 ```bash
+python manage.py makemigrations
 python manage.py migrate
 ```
-6. Start the Server
+6. Create a Superuser(Admin Account)
+```bash
+python manage.py createsuperuser
+```
+7. Collect Static Files
+```bash
+python manage.py collectstatic --noinput
+```
+8. Start the Server
 ```bash
 python manage.py runserver
 ```
+Visit https://127.0.0.1:8000 in your browser
+
+
 #### (b) Docker Setup
 1. Build the Image
 ```bash
@@ -102,9 +177,7 @@ docker run --env-file .env -p 8000:8000 ecommerce-site-sports
 ```
 
 
-### M-PESA Sandbox Integration
-This project uses Safaricom’s [Daraja API Sandbox](https://developer.safaricom.co.ke/daraja/apis/post/safaricom-sandbox) for development.
-
+### M-PESA Integration
 #### STK Push Flow
 1. User adds items to cart
 2. Enters phone number and address
@@ -145,35 +218,110 @@ CSRF_TRUSTED_ORIGINS = [
 
 
 ##### Production
-- You must have an mpesa shortcode, username and organisation name(if you don't have a shortcode apply for one, and also request Safaricom via m-pesabusiness@safaricom.co.ke to send you the administrator logins i.e username and password, since you'll need the username during the process of going live.I'll soon write a blog on how to apply for the shortcode and other credentials i.e username)
-- After entering the mpesa shortcode, username and organisation name you will be redirected to a page where you will select the API products and enter an OTP which will be sent to your email.
-- After the above process Safaricom will email you a passkey, then your live app will now be visible after you go to 'My Apps' and click on the dropdown at the 'Active entity' section. The app will have the credentials required i.e Consumer key, Consumer secret and the shortcode. 
+- Apply for an M-PESA shortcode, username, and organization name.
+- Request Safaricom to send administrator logins via m-pesabusiness@safaricom.co.ke.
+- After entering the shortcode, username, and organization name, select API products and  enter the OTP sent to your email.
+- Safaricom will email you a passkey. Your live app credentials will include:
+  Consumer Key
+  Consumer Secret
+  Shortcode
 
 ### Pre-commit Hooks
 This project uses [pre-commit](https://pre-commit.com/) to enforce code quality and security checks before each commit.
-To set it up locally:
-
+1. Install Pre-commit
 ```bash
 pip install pre-commit
+```
+2. Install the Git Hooks
+```bash
 pre-commit install
 ```
-This activates hooks for:
-  black — code formatting
-  isort — import sorting
-  flake8 — style and syntax checks
-NOTE : There is no official pre-commit hook for safety maintained by Safety CLI or PyUp, but you can still run safety in CI or manually
+3. Configure .pre-commit-config.yml
+```bash
+repos:
+  - repo: https://github.com/psf/black
+    rev: 25.9.0
+    hooks:
+      - id: black
+        args: [--check]
+
+  - repo: https://github.com/PyCQA/flake8
+    rev: 7.3.0
+    hooks:
+      - id: flake8
+
+  - repo: https://github.com/pre-commit/mirrors-isort
+    rev: v5.10.1
+    hooks:
+      - id: isort
+        args: [--check-only]
+```
+4. Run the pre-commit hook
+```bash
+pre-commit run --all-files
+```
+
+**NOTE** : There is no official pre-commit hook for safety maintained by Safety CLI or PyUp, but you can still run safety in CI or manually
 ```bash
 safety check --full-report --file=requirements.txt
 ```
 
-### Deployment Notes
-- Render handles static/media files via Django’s collectstatic and /media/ folder
-- Supabase PostgreSQL is used for persistent cloud storage
-- Migrations and creation of the static folder are applied via Render shell:
+### Deployment
+1. Create a Render Account: Visit Render.com
+2. Connect Your GitHub Repository:
+   New Web Service → Connect GitHub
+   Select your repository
+3. Configure Build Settings:
+   Build Command: pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate
+   Start Command: gunicorn store.wsgi:application
+4. Set Environment Variables
+   Add all variables from your .env file to Render's 'Environment' section in the dashboard
+5. Deploy:
+   Render will automatically deploy on every push to main
+
+### Future Improvements
+ - **Advanced Search & Filtering**: Implement search with autocomplete and multiple filters (price range, size, color, rating).
+ - **Product Reviews & Ratings**: Allow customers to rate and review products.
+ - **Wishlist Feature**: Let users save favorite items for later.
+ - **Order Tracking**: Real-time tracking with SMS/email notifications.
+
+
+### Contributing
+Contributions are welcome. To contribute:
+1. Fork the Repository
+2. Clone Your Fork Locally
 ```bash
-python manage.py collectstatic --noinput #If you are using render's free plan, but if you have a paid instance add this as your post-build command
-python manage.py migrate
+git clone https://github.com/yourusername/realestate.git
+cd realestate
 ```
+3. Create a Feature Branch
+```bash
+git checkout -b feature/your-feature-name
+```
+4. Make Your Changes
+   Write clean, well-documented code
+   Follow PEP 8 style guide
+   Run pre-commit hooks before committing
+
+5. Commit your changes
+```bash
+git commit -m "Add: Brief description of your changes"
+```
+6. Push to your fork
+```bash
+git push origin feature/your-feature-name
+```
+7. Open a Pull Request
+- Go to your fork on GitHub
+- Click "Compare & pull request"
+- Fill in the title and description
+  Describe what your changes do
+  Reference any related issues (e.g., )
+- Submit and wait for review
+
+
+### License
+This project is open-source under the MIT License - see the LICENSE file for details.
 
 ### Developer Contact
 Developed and maintained by PEKIM
@@ -181,10 +329,11 @@ Developed and maintained by PEKIM
  Phone: +254 797933409
  GitHub: [github.com/pekimnjenga](https://github.com/pekimnjenga)
 
-
-### Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you’d like to change.
-
-### License
-This project is open-source under the MIT License.
-
+### Acknowledgements
+- [Django Documentation](https://docs.djangoproject.com/)
+- [Bootstrap 5](https://getbootstrap.com/)
+- [Mpesa Daraja API](https://developer.safaricom.co.ke/)
+- [Supabase](https://supabase.com/)
+- [Render](https://render.com/)
+- [pre-commit](https://pre-commit.com/)
+- [Github](https://github.com)

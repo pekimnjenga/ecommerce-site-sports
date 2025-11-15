@@ -210,3 +210,56 @@ html, body {
 .dropdown-item:hover{
   color: #00a000 !important;
 }
+.size-btn {
+  transition: all 0.2s ease-in-out;
+}
+
+.size-btn:hover {
+  background-color: #343a40;
+  color: #fff;
+  border-color: #343a40;
+}
+
+.size-btn.active {
+  background-color: #212529;
+  color: #fff;
+  border-color: #212529;
+}
+.btn:hover {
+  background-color: #343a40;
+  color: #fff;
+}
+
+.btn.active {
+  background-color: #212529;
+  color: #fff;
+  border-color: #212529;
+}
+.item-image {
+  transition: transform 0.3s ease;
+}
+.image-link:hover .item-image {
+  transform: scale(1.05);
+}
+
+.item-name-link {
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.3s ease;
+}
+.item-name-link:hover {
+  color: #28a745; 
+  text-decoration: underline;
+}
+.carousel-inner img {
+  transition: transform 0.3s ease;
+}
+.carousel-inner img:hover {
+  transform: scale(1.02);
+}
+.btn-outline-dark.active {
+  background-color: #28a745;
+  color: white;
+  border-color: #28a745;
+}
+

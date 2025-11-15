@@ -22,8 +22,10 @@ class Items(models.Model):
     )
     price = models.DecimalField(max_digits=10, decimal_places=2)
     description = models.TextField(default="", blank=True)
-    image = models.ImageField(upload_to="images/", default="images/default.jpg")
     stock = models.IntegerField(default=0)
+    sizes = models.CharField(
+        max_length=100, blank=True, help_text="Comma-separated sizes like M,L,XL"
+    )
 
     def add_stock(self, amount):
         self.stock += amount
@@ -36,8 +38,20 @@ class Items(models.Model):
         else:
             raise ValueError("Insufficient stock")
 
+    def delete(self, *args, **kwargs):
+        from app.supabase_utils import delete_image_from_supabase
+
+        for image in self.images.all():
+            delete_image_from_supabase(image.image_url)
+        super().delete(*args, **kwargs)
+
     def __str__(self):
         return f"Item: {self.name} | Stock: {self.stock}"
+
+
+class ItemImage(models.Model):
+    item = models.ForeignKey(Items, related_name="images", on_delete=models.CASCADE)
+    image_url = models.URLField()
 
 
 class Order(models.Model):

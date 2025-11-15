@@ -31,10 +31,11 @@ SECRET_KEY = "django-insecure--pq%s&j93_w0x+3_)-9(h*r-@(bj(!%(+*hk96m$fdj97l#y41
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://e4708532ec72.ngrok-free.app",
+    "http://127.0.0.1:8000",
+    "http://localhost:8000",
 ]
 
 
@@ -89,24 +90,24 @@ WSGI_APPLICATION = "store.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
-
-
 # DATABASES = {
 # "default": {
-# "ENGINE": "django.db.backends.postgresql",
-# "NAME": os.getenv("DATABASE_NAME"),
-# "USER": os.getenv("DATABASE_USER"),
-# "PASSWORD": os.getenv("DATABASE_PASSWORD"),
-# "HOST": os.getenv("DATABASE_HOST"),
-# "PORT": os.getenv("DATABASE_PORT"),
+# "ENGINE": "django.db.backends.sqlite3",
+# "NAME": BASE_DIR / "db.sqlite3",
 # }
 # }
+
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("DATABASE_NAME"),
+        "USER": os.getenv("DATABASE_USER"),
+        "PASSWORD": os.getenv("DATABASE_PASSWORD"),
+        "HOST": os.getenv("DATABASE_HOST"),
+        "PORT": os.getenv("DATABASE_PORT"),
+    }
+}
 
 
 # Password validation
@@ -143,7 +144,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
+
+#  Supabase Settings
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+
+
 STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
 

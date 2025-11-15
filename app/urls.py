@@ -25,6 +25,7 @@ urlpatterns = [
     path(
         "category/<int:category_id>/", user_views.category_items, name="category_items"
     ),
+    path("item/<int:item_id>/", user_views.item_details, name="item_details"),
 ]
 
 
