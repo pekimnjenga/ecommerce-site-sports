@@ -1,10 +1,9 @@
 ### ecommerce-site-sports
 An elegant ecommerce platform for selling sports items — built with Django, styled with Bootstrap 5, css and html, and powered by M-PESA Daraja API for seamless mobile payments.
 
-![Build Status](https://img.shields.io/github/actions/workflow/status/pekimnjenga/ecommerce-site-sports/ci.yml?branch=main) ![Python Version](https://img.shields.io/badge/python-3.9%2B-blue) ![License](https://img.shields.io/github/license/pekimnjenga/ecommerce-site-sports)  
-![Pre-commit Enabled](https://img.shields.io/badge/pre--commit-enabled-brightgreen) ![Coverage](https://img.shields.io/badge/coverage-90%25-brightgreen) ![Safety Checks](https://img.shields.io/badge/security-safety%20enabled-orange)  
-![Dockerized](https://img.shields.io/badge/docker-ready-blue) ![Render](https://img.shields.io/badge/deployed%20to-Render-blue) ![Database](https://img.shields.io/badge/database-Supabase%20PostgreSQL-lightgrey)  
-![Framework](https://img.shields.io/badge/framework-Django-green) ![UI Framework](https://img.shields.io/badge/UI-Bootstrap%205-purple) ![Payment](https://img.shields.io/badge/payment-MPESA%20Daraja%20API-yellow)
+![Build Status](https://img.shields.io/github/actions/workflow/status/pekimnjenga/ecommerce-site-sports/ci.yml?branch=main) ![Python Version](https://img.shields.io/badge/python-3.9%2B-blue) ![License](https://img.shields.io/github/license/pekimnjenga/ecommerce-site-sports)
+![Pre-commit Enabled](https://img.shields.io/badge/pre--commit-enabled-brightgreen) ![Dockerized](https://img.shields.io/badge/docker-ready-blue) ![Render](https://img.shields.io/badge/deployed%20to-Render-blue) 
+![Database](https://img.shields.io/badge/database-Supabase%20PostgreSQL-lightgrey) ![Framework](https://img.shields.io/badge/framework-Django-green) ![UI Framework](https://img.shields.io/badge/UI-Bootstrap%205-purple) ![Payment](https://img.shields.io/badge/payment-MPESA%20Daraja%20API-yellow)
 
 ### Table of Contents
 - [ecommerce-site-sports](#ecommerce-site-sports)
@@ -77,11 +76,6 @@ An elegant ecommerce platform for selling sports items — built with Django, st
   - `black` — ensures consistent code formatting
   - `isort` — enforces import order
   - `flake8` — flags style and syntax issues
-  - `safety` — checks for insecure dependencies
-  **NOTE** : There is no official pre-commit hook for safety maintained by Safety CLI or PyUp, but you can still run safety in CI or manually
-  ```bash
-  safety check --full-report --file=requirements.txt
-  ```
 - **CD Automation**: The project gets automatically deployed to Render after passing all testing and quality checks.
 
 #### Version Control
@@ -261,10 +255,6 @@ repos:
 pre-commit run --all-files
 ```
 
-**NOTE** : There is no official pre-commit hook for safety maintained by Safety CLI or PyUp, but you can still run safety in CI or manually
-```bash
-safety check --full-report --file=requirements.txt
-```
 
 ### Deployment
 1. Create a Render Account: Visit Render.com

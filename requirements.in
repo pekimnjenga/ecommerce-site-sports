@@ -7,5 +7,5 @@ Pillow
 black
 flake8
 isort
-safety
-
+supabase
+pre-commit

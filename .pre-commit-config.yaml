@@ -15,5 +15,4 @@ repos:
     hooks:
       - id: isort
         args: [--check-only]
-
-
+  
