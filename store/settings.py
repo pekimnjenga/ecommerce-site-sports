@@ -31,11 +31,12 @@ SECRET_KEY = "django-insecure--pq%s&j93_w0x+3_)-9(h*r-@(bj(!%(+*hk96m$fdj97l#y41
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "ecommerce-site-sports.onrender.com"]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:8000",
     "http://localhost:8000",
+    "https://ecommerce-site-sports.onrender.com",
 ]
 
 
