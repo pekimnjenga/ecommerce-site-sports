@@ -1,9 +1,25 @@
 ### ecommerce-site-sports
 An elegant ecommerce platform for selling sports items — built with Django, styled with Bootstrap 5, css and html, and powered by M-PESA Daraja API for seamless mobile payments.
 
-![Build Status](https://img.shields.io/github/actions/workflow/status/pekimnjenga/ecommerce-site-sports/ci.yml?branch=main) ![Python Version](https://img.shields.io/badge/python-3.9%2B-blue) ![License](https://img.shields.io/github/license/pekimnjenga/ecommerce-site-sports)
-![Pre-commit Enabled](https://img.shields.io/badge/pre--commit-enabled-brightgreen) ![Dockerized](https://img.shields.io/badge/docker-ready-blue) ![Render](https://img.shields.io/badge/deployed%20to-Render-blue) 
-![Database](https://img.shields.io/badge/database-Supabase%20PostgreSQL-lightgrey) ![Framework](https://img.shields.io/badge/framework-Django-green) ![UI Framework](https://img.shields.io/badge/UI-Bootstrap%205-purple) ![Payment](https://img.shields.io/badge/payment-MPESA%20Daraja%20API-yellow)
+### Project Status
+[![CI Checks ](https://github.com/pekimnjenga/ecommerce-site-sports/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/pekimnjenga/ecommerce-site-sports/actions/workflows/ci.yml) 
+![Pre-commit Enabled](https://img.shields.io/badge/pre--commit-enabled-brightgreen)
+
+### Tech Stack
+![Python Version](https://img.shields.io/badge/python-3.9%2B-blue) 
+![Framework](https://img.shields.io/badge/framework-Django-green) 
+![UI](https://img.shields.io/badge/UI-Bootstrap%205-purple)
+![Docker](https://img.shields.io/badge/docker-ready-blue)
+
+### Infrastructure and Automation
+![Render](https://img.shields.io/badge/deployed%20to-Render-blue) 
+![Database](https://img.shields.io/badge/database-Supabase%20PostgreSQL-lightgrey) 
+![Cloudflare R2 Storage](https://img.shields.io/badge/storage-Cloudflare_R2-orange)
+![GitHub Actions CI/CD](https://img.shields.io/badge/CI/CD-GitHub_Actions-blue)
+![Payment](https://img.shields.io/badge/payment-MPESA%20Daraja%20API-yellow)
+
+### Licensing
+![License](https://img.shields.io/github/license/pekimnjenga/ecommerce-site-sports)
 
 ### Table of Contents
 - [ecommerce-site-sports](#ecommerce-site-sports)
